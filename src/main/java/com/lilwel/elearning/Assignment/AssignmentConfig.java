@@ -13,17 +13,12 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Configuration
-@EnableJpaAuditing
 public class AssignmentConfig {
     @Bean
     CommandLineRunner commandLineRunner(AssignmentRepository repo) {
         return args -> {
-            repo.save(new Assignment(
-                    "assignment 1",
-                    15d,
-                    UUID.randomUUID(),
-                    UUID.randomUUID()
-            ));
+//            repo.save(
+//            ));
         };
 
     }
