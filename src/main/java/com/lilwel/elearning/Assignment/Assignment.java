@@ -2,6 +2,7 @@ package com.lilwel.elearning.Assignment;
 
 import com.lilwel.elearning.Account.Account;
 import com.lilwel.elearning.AssignmentSubmission.AssignmentSubmission;
+import com.lilwel.elearning.Course.Course;
 import com.sun.istack.NotNull;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -46,10 +47,13 @@ public class Assignment {
 
     @OneToMany(
             cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY
-
+            fetch = FetchType.LAZY,
+            mappedBy = "assignment"
     )
-    @JoinColumn(name = "assignment_id",referencedColumnName = "id")
     private List<AssignmentSubmission> submissions;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "course_id",referencedColumnName = "id")
+    private Course course;
 
 }

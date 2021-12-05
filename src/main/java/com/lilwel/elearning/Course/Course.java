@@ -1,35 +1,39 @@
 package com.lilwel.elearning.Course;
 
+import com.lilwel.elearning.Account.Account;
+import com.lilwel.elearning.Assignment.Assignment;
+import com.lilwel.elearning.CourseStudent.CourseStudent;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.List;
+import java.util.UUID;
 
 @Entity
-@Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
+@Builder
+@Data
 public class Course {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private UUID id = UUID.randomUUID();
+
+    @Column(nullable = false)
     @NotNull(message = "tile can not be null")
     private String title;
+
     @NotNull(message = "description can not be null")
     private String description;
 
-//    @OneToOne
-//    @JoinColumn(name = "instructor_id")
-//    private Account instructor;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "instructor_id", referencedColumnName = "id")
+    private Account instructor;
 
-//    @OneToMany(mappedBy = "course")
-//    private List<Account> students;
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "course")
+    private List<Assignment> assignments;
 
-//    @OneToMany(mappedBy = "course")
-//    private List<Assignment> assignments;
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "student")
+    private List<CourseStudent> courseStudents;
+
 }

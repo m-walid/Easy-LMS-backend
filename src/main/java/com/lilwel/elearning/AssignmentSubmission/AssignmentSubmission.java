@@ -22,8 +22,8 @@ import java.util.UUID;
 @Builder
 @EntityListeners(AuditingEntityListener.class)
 public class AssignmentSubmission {
-    @Id
-    private UUID id = UUID.randomUUID();
+    @EmbeddedId
+    private AssignmentSubmissionKey id;
 
     @Column(nullable = false)
     private Double points;
@@ -36,11 +36,13 @@ public class AssignmentSubmission {
     private long submittedAt;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "assignment_id",referencedColumnName = "id")
+    @MapsId("assignmentId")
+    @JoinColumn(referencedColumnName = "id")
     private Assignment assignment;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "student_id",referencedColumnName = "id")
+    @MapsId("studentId")
+    @JoinColumn(referencedColumnName = "id")
     private Account student;
 
 
