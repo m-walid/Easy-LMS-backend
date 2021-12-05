@@ -1,10 +1,7 @@
 package com.lilwel.elearning.Assignment;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,7 +21,7 @@ public class AssignmentController {
     }
 
     @PostMapping
-    public Assignment addAssignment() {
-        return new Assignment();
+    public Assignment addAssignment(@RequestBody Assignment assignment) {
+        return assignmentService.addAssignment(assignment);
     }
 }

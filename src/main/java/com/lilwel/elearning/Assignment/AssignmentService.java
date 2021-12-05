@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class AssignmentService {
@@ -18,4 +17,9 @@ public class AssignmentService {
     public List<Assignment> getAssignments(){
     return assignmentRepository.findAll();
     }
+
+    public Assignment addAssignment(Assignment assignment){
+        return assignmentRepository.save(assignment);
+    }
+
 }
