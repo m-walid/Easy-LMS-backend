@@ -3,6 +3,7 @@ package com.lilwel.elearning.Assignment;
 import com.lilwel.elearning.Security.AuthUser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,7 +34,7 @@ public class AssignmentController {
     }
 
     @PostMapping
-    public Assignment addAssignment() {
-        return new Assignment();
+    public Assignment addAssignment(@RequestBody Assignment assignment) {
+        return assignmentService.addAssignment(assignment);
     }
 }

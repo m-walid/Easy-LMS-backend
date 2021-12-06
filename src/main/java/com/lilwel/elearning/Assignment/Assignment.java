@@ -1,18 +1,16 @@
 package com.lilwel.elearning.Assignment;
 
-import com.lilwel.elearning.Account.Account;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.lilwel.elearning.AssignmentSubmission.AssignmentSubmission;
 import com.lilwel.elearning.Course.Course;
-import com.sun.istack.NotNull;
-import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -52,6 +50,7 @@ public class Assignment {
     )
     private List<AssignmentSubmission> submissions;
 
+    @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "course_id",referencedColumnName = "id")
     private Course course;

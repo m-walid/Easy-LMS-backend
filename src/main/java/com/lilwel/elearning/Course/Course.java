@@ -1,9 +1,13 @@
 package com.lilwel.elearning.Course;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.lilwel.elearning.Account.Account;
 import com.lilwel.elearning.Assignment.Assignment;
 import com.lilwel.elearning.CourseStudent.CourseStudent;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -26,11 +30,12 @@ public class Course {
     @NotNull(message = "description can not be null")
     private String description;
 
+    @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "instructor_id", referencedColumnName = "id")
     private Account instructor;
 
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "course")
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "course",cascade = CascadeType.ALL)
     private List<Assignment> assignments;
 
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "student")
