@@ -4,6 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.lilwel.elearning.Security.AuthPrincipal;
 import com.lilwel.elearning.Security.AuthUser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,8 +19,8 @@ import java.util.stream.Collectors;
 import static java.util.Arrays.stream;
 @Slf4j
 public class JwtUtil {
+    private static Algorithm algo = Algorithm.HMAC256("secretjwtKey".getBytes());
     public static  String generateToken(AuthUser user){
-        Algorithm algo = Algorithm.HMAC256("secretjwtKey".getBytes());
         return JWT.create()
                 .withSubject(user.getUsername())
                 .withClaim("userId",user.getUserId().toString())
@@ -30,20 +31,18 @@ public class JwtUtil {
     }
 
     public static UsernamePasswordAuthenticationToken verifyToken(String token){
-        Algorithm algo = Algorithm.HMAC256("secretjwtKey".getBytes());
         JWTVerifier verifier = JWT.require(algo).build();
         DecodedJWT decodedJWT = verifier.verify(token);
         String username = decodedJWT.getSubject();
         String[] roles = decodedJWT.getClaim("roles").asArray(String.class);
         String userIdString = decodedJWT.getClaim("userId").toString().replaceAll("\"","");
+        UUID userId = UUID.fromString(userIdString);
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
         stream(roles).forEach(role->{
             authorities.add(new SimpleGrantedAuthority((role)));
         });
-        Map<String,String> user = new HashMap<>();
-        user.put("username",username);
-        user.put("userId",userIdString);
-        return  new UsernamePasswordAuthenticationToken(user,null,authorities);
+        AuthPrincipal authPrincipal = new AuthPrincipal(username,userId);
+        return  new UsernamePasswordAuthenticationToken(authPrincipal,null,authorities);
     }
 
 }

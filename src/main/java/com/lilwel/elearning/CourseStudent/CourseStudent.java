@@ -10,17 +10,21 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.util.UUID;
 
 @Entity
 @Table(name="course_students")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@Builder
 @EntityListeners(AuditingEntityListener.class)
 public class CourseStudent {
     @EmbeddedId
     private CourseStudentKey id;
-
+//    @Id
+//    UUID id = UUID.randomUUID();
+    @Column(updatable = false)
     @CreatedDate
     private long enrolledAt;
 

@@ -21,12 +21,12 @@ public class ElearningApplication {
 		SpringApplication.run(ElearningApplication.class, args);
 	}
 
-	@Bean
-	CommandLineRunner commandLineRunner(AccountService accountService){
-		return args -> {
-			accountService.saveAccount(Account.builder().name("walid").email("walid@walid.walid").password("walid1234").role(Account.Role.Teacher).id(UUID.randomUUID()).build());
-		};
-	}
+//	@Bean
+//	CommandLineRunner commandLineRunner(AccountService accountService){
+//		return args -> {
+//			accountService.saveAccount(Account.builder().name("walid").email("walid@walid.walid").password("walid1234").role(Account.Role.Teacher).id(UUID.randomUUID()).build());
+//		};
+//	}
 
 	@Bean
 	PasswordEncoder passwordEncoder(){

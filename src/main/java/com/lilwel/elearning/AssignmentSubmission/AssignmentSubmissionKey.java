@@ -10,6 +10,8 @@ import java.util.UUID;
 
 @Embeddable
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class AssignmentSubmissionKey implements Serializable {
     private UUID studentId;
     private UUID assignmentId;

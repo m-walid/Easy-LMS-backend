@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -21,8 +22,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import javax.imageio.plugins.tiff.GeoTIFFTagSet;
 
-import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.http.HttpMethod.POST;
+import static org.springframework.http.HttpMethod.*;
 
 @Configuration
 @EnableWebSecurity
@@ -45,9 +45,25 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 //        CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManagerBean());
 //        customAuthenticationFilter.setFilterProcessesUrl("/api/v1/login");
         http.csrf().disable();
-        http.authorizeRequests().antMatchers(POST,"/api/v1/signup").permitAll();
-        http.authorizeRequests().antMatchers(POST,"/api/v1/login").permitAll();
+        http.authorizeRequests().antMatchers(POST,"/api/v1/auth/signup").permitAll();
+        http.authorizeRequests().antMatchers(POST,"/api/v1/auth/login").permitAll();
+
+        //Assignment routes
+        http.authorizeRequests().antMatchers(DELETE,"/api/v1/assignments/**").hasAuthority("INSTRUCTOR");
+        http.authorizeRequests().antMatchers(GET,"/api/v1/assignments/**/submissions").hasAuthority("INSTRUCTOR");
+        http.authorizeRequests().antMatchers(POST,"/api/v1/assignments/**/submissions").hasAuthority("STUDENT");
+
+        //submissions routes
+        http.authorizeRequests().antMatchers(POST,"/api/v1/submissions/**").hasAuthority("INSTRUCTOR");
+
+        //courses routes
+        http.authorizeRequests().antMatchers(POST,"/api/v1/courses").hasAuthority("INSTRUCTOR");
+        http.authorizeRequests().antMatchers(DELETE,"/api/v1/courses/**").hasAuthority("INSTRUCTOR");
+        http.authorizeRequests().antMatchers(POST,"/api/v1/courses/**/assignments").hasAuthority("INSTRUCTOR");
+        http.authorizeRequests().antMatchers(POST,"/api/v1/courses/**/students").hasAuthority("INSTRUCTOR");
+
         http.authorizeRequests().anyRequest().authenticated();
+
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 //        http.addFilter(customAuthenticationFilter);
         http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
@@ -56,7 +72,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     }
 
-
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring().antMatchers("/api/v1/auth/signup");
+                web.ignoring().antMatchers("/api/v1/auth/login");
+    }
 
     @Bean
     @Override
