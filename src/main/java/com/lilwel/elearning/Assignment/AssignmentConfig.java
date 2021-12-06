@@ -14,12 +14,6 @@ import java.util.UUID;
 
 @Configuration
 public class AssignmentConfig {
-    @Bean
-    CommandLineRunner commandLineRunner(AssignmentRepository repo) {
-        return args -> {
-//            repo.save(
-//            ));
-        };
 
-    }
+
 }
