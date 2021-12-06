@@ -1,0 +1,27 @@
+prefix /api/v1/
+
+Account Controller
+/signup POST
+/login POST
+/logout GET
+
+CourseController
+/courses GET get all courses
+/courses POST  adds new course
+/courses/:id DELETE delete a specific course
+/courses/:id/ GET get a specific course
+/courses/:id/assignments GET get all course assignments
+/courses/:id/assignments POST adds assignment to course
+/courses/:id/students GET get all course students
+/courses/:id/students POST adds a student to a course
+
+AssignmentController
+/assignments/:id GET get a specific assignment
+/assignments/:id DELETE delete a specific assignment
+/assignments/:id/submissions GET get all assignment submissions
+/assignments/:id/submissions POST adds a submission to an assignment
+
+SubmissionController
+/submissions/:id GET get specific submission
+/submissions/:id/grade POST update submission grade
+
