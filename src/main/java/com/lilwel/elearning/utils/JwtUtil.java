@@ -7,6 +7,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.lilwel.elearning.Security.AuthPrincipal;
 import com.lilwel.elearning.Security.AuthUser;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -19,7 +20,9 @@ import java.util.stream.Collectors;
 import static java.util.Arrays.stream;
 @Slf4j
 public class JwtUtil {
-    private static Algorithm algo = Algorithm.HMAC256("secretjwtKey".getBytes());
+    @Value("${jwt.secret}")
+    private static String secret;
+    private static Algorithm algo = Algorithm.HMAC256(secret.getBytes());
     public static  String generateToken(AuthUser user){
         return JWT.create()
                 .withSubject(user.getUsername())
