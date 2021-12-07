@@ -1,5 +1,6 @@
 package com.lilwel.elearning.Security;
 
+import com.lilwel.elearning.Account.Account;
 import com.lilwel.elearning.Account.AccountService;
 import com.lilwel.elearning.filters.CustomAuthenticationFilter;
 import com.lilwel.elearning.filters.CustomAuthorizationFilter;
@@ -22,6 +23,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import javax.imageio.plugins.tiff.GeoTIFFTagSet;
 
+import static com.lilwel.elearning.Account.Account.Role.INSTRUCTOR;
+import static com.lilwel.elearning.Account.Account.Role.STUDENT;
 import static org.springframework.http.HttpMethod.*;
 
 @Configuration
@@ -45,29 +48,29 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 //        CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManagerBean());
 //        customAuthenticationFilter.setFilterProcessesUrl("/api/v1/login");
         http.csrf().disable();
+        http.cors().disable();
         http.authorizeRequests().antMatchers(POST,"/api/v1/auth/signup").permitAll();
         http.authorizeRequests().antMatchers(POST,"/api/v1/auth/login").permitAll();
 
         //Assignment routes
-        http.authorizeRequests().antMatchers(DELETE,"/api/v1/assignments/**").hasAuthority("INSTRUCTOR");
-        http.authorizeRequests().antMatchers(GET,"/api/v1/assignments/**/submissions").hasAuthority("INSTRUCTOR");
-        http.authorizeRequests().antMatchers(POST,"/api/v1/assignments/**/submissions").hasAuthority("STUDENT");
+        http.authorizeRequests().antMatchers(DELETE,"/api/v1/assignments/{id}").hasAuthority(INSTRUCTOR.toString());
+        http.authorizeRequests().antMatchers(GET,"/api/v1/assignments/{id}/submissions").hasAuthority(INSTRUCTOR.toString());
+        http.authorizeRequests().antMatchers(POST,"/api/v1/assignments/{id}/submissions").hasAuthority(STUDENT.toString());
 
         //submissions routes
-        http.authorizeRequests().antMatchers(POST,"/api/v1/submissions/**").hasAuthority("INSTRUCTOR");
+        http.authorizeRequests().antMatchers(POST,"/api/v1/submissions/{id}/**").hasAuthority(INSTRUCTOR.toString());
 
         //courses routes
-        http.authorizeRequests().antMatchers(POST,"/api/v1/courses").hasAuthority("INSTRUCTOR");
-        http.authorizeRequests().antMatchers(DELETE,"/api/v1/courses/**").hasAuthority("INSTRUCTOR");
-        http.authorizeRequests().antMatchers(POST,"/api/v1/courses/**/assignments").hasAuthority("INSTRUCTOR");
-        http.authorizeRequests().antMatchers(POST,"/api/v1/courses/**/students").hasAuthority("INSTRUCTOR");
-
+        http.authorizeRequests().antMatchers(POST,"/api/v1/courses").hasAuthority(INSTRUCTOR.toString());
+        http.authorizeRequests().antMatchers(DELETE,"/api/v1/courses/{id}").hasAuthority(INSTRUCTOR.toString());
+        http.authorizeRequests().antMatchers(POST,"/api/v1/courses/{id}/assignments").hasAuthority(INSTRUCTOR.toString());
+        http.authorizeRequests().antMatchers(POST,"/api/v1/courses/{id}/students").hasAuthority(INSTRUCTOR.toString());
         http.authorizeRequests().anyRequest().authenticated();
 
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 //        http.addFilter(customAuthenticationFilter);
         http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
-//        http.authorizeRequests().antMatchers(GET,"/api/v1/courses/**").hasAnyAuthority("STUDENT","INSTRUCTOR");
+//        http.authorizeRequests().antMatchers(GET,"/api/v1/courses/**").hasAnyAuthority("STUDENT",Role.INSTRUCTOR);
 //        http.authorizeRequests().anyRequest().permitAll();
 
     }

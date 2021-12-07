@@ -19,18 +19,25 @@ import javax.validation.constraints.NotEmpty;
 import java.util.UUID;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @EntityListeners(AuditingEntityListener.class)
+@Table(
+        uniqueConstraints=
+        @UniqueConstraint(columnNames={"assignment_id", "student_id"},name="submissionUniqueConstraint")
+)
 public class AssignmentSubmission {
     @Id
     UUID id = UUID.randomUUID();
 
     @Column(nullable = false)
     private Double points=0d;
-    @NotEmpty
+
+    String fileName;
+
     @Column(nullable = false)
     private String fileUrl;
 

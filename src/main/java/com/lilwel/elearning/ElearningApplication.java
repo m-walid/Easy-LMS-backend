@@ -18,6 +18,7 @@ import java.util.UUID;
 public class ElearningApplication {
 
 	public static void main(String[] args) {
+		System.out.println((System.getenv().toString()));
 		SpringApplication.run(ElearningApplication.class, args);
 	}
 
@@ -27,7 +28,6 @@ public class ElearningApplication {
 //			accountService.saveAccount(Account.builder().name("walid").email("walid@walid.walid").password("walid1234").role(Account.Role.Teacher).id(UUID.randomUUID()).build());
 //		};
 //	}
-
 	@Bean
 	PasswordEncoder passwordEncoder(){
 		return  new BCryptPasswordEncoder();
