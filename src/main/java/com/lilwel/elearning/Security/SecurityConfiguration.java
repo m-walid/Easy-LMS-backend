@@ -47,6 +47,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 //        CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManagerBean());
 //        customAuthenticationFilter.setFilterProcessesUrl("/api/v1/login");
+        http.requiresChannel()
+                .requestMatchers(r -> r.getHeader("X-Forwarded-Proto") != null)
+                .requiresSecure();
         http.csrf().disable();
         http.cors().disable();
         http.authorizeRequests().antMatchers(POST,"/api/v1/auth/signup").permitAll();
