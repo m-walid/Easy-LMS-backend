@@ -13,16 +13,28 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.util.Arrays.stream;
 @Slf4j
+@Component
 public class JwtUtil {
-    @Value("${jwt.secret}")
     private static String secret;
-    private static Algorithm algo = Algorithm.HMAC256(secret.getBytes());
+    @Value("${jwt.secret}")
+    public void setSecret(String secret) {
+        JwtUtil.secret = secret;
+    }
+    private static Algorithm algo ;
+
+    @PostConstruct
+    public void postConstruct(){
+        JwtUtil.algo=Algorithm.HMAC256(secret.getBytes());
+    }
+
     public static  String generateToken(AuthUser user){
         return JWT.create()
                 .withSubject(user.getUsername())

@@ -51,7 +51,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .requestMatchers(r -> r.getHeader("X-Forwarded-Proto") != null)
                 .requiresSecure();
         http.csrf().disable();
-        http.cors().disable();
+        http.cors();
         http.authorizeRequests().antMatchers(POST,"/api/v1/auth/signup").permitAll();
         http.authorizeRequests().antMatchers(POST,"/api/v1/auth/login").permitAll();
 
