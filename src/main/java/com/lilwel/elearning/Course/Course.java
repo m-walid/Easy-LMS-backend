@@ -30,6 +30,7 @@ public class Course {
     @NotBlank(message = "title can not be null")
     private String title;
 
+    @Column(columnDefinition = "TEXT")
     @NotBlank(message = "description can not be null")
     private String description;
 
