@@ -48,7 +48,7 @@ public class AssignmentSubmission {
     @ManyToOne(optional = false,fetch = FetchType.LAZY)
     @JoinColumn(name="assignment_id",referencedColumnName = "id")
     private Assignment assignment;
-    @JsonIgnore
+
     @ManyToOne(optional = false)
     @JoinColumn(name="student_id",referencedColumnName = "id")
     private Account student;

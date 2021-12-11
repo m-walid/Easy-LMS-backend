@@ -42,6 +42,7 @@ public class Account {
     private String email;
     @Column(name = "password_hash", nullable = false)
     @Size(min=8,message = "password should be at least 8 characters")
+    @JsonIgnore
     private String password;
     @Column(nullable = false)
     private Role role;
