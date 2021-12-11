@@ -12,7 +12,7 @@ public interface CourseRepository extends JpaRepository<Course, UUID> {
     @Query(value = "select * from course where instructor_id= ?1",nativeQuery = true)
     List<Course> findAllByInstructor(UUID instructorId);
 
-    @Query(value = "select * from course where id= (select course_id from course_students where student_id= ?1)",nativeQuery = true)
+    @Query(value = "select * from course where id in (select course_id from course_students where student_id= ?1)",nativeQuery = true)
     List<Course> findAllByStudent(UUID studentId);
 
     @Query(value = "select email from account where id in (select student_id from course_students where course_id= ?1)",nativeQuery = true)
