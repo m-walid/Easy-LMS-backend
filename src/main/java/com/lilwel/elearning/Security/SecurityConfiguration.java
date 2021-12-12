@@ -57,7 +57,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         //Assignment routes
         http.authorizeRequests().antMatchers(DELETE,"/api/v1/assignments/{id}").hasAuthority(INSTRUCTOR.toString());
-        http.authorizeRequests().antMatchers(GET,"/api/v1/assignments/{id}/submissions").hasAuthority(INSTRUCTOR.toString());
+//        http.authorizeRequests().antMatchers(GET,"/api/v1/assignments/{id}/submissions").hasAuthority(INSTRUCTOR.toString());
         http.authorizeRequests().antMatchers(POST,"/api/v1/assignments/{id}/submissions").hasAuthority(STUDENT.toString());
 
         //submissions routes

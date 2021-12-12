@@ -48,7 +48,6 @@ public class AccountController {
     public ResponseEntity<?> signup(@RequestBody @Valid Account account)  {
         try {
             Account addedAccount = accountService.saveAccount(account);
-            addedAccount.setPassword(null);
             return ResponseHandler.handleResponse("Successfully registered", HttpStatus.OK, addedAccount);
         } catch (Exception e) {
             return ResponseHandler.handleResponse("ERROR", HttpStatus.BAD_REQUEST, e.getMessage());

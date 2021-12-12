@@ -39,6 +39,7 @@ public class AssignmentSubmission {
     String fileName;
 
     @Column(nullable = false)
+    @JsonIgnore
     private String fileUrl;
 
     @CreatedDate

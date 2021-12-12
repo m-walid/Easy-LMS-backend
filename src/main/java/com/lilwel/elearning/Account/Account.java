@@ -2,6 +2,7 @@ package com.lilwel.elearning.Account;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lilwel.elearning.Course.Course;
 import com.lilwel.elearning.CourseStudent.CourseStudent;
 import lombok.AllArgsConstructor;
@@ -42,7 +43,7 @@ public class Account {
     private String email;
     @Column(name = "password_hash", nullable = false)
     @Size(min=8,message = "password should be at least 8 characters")
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
     @Column(nullable = false)
     private Role role;
